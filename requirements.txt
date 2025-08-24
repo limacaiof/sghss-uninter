@@ -1,0 +1,6 @@
+uvicorn
+pydantic
+SQLAlchemy
+passlib
+python-multipart
+pyjwt
