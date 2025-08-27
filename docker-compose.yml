@@ -1,0 +1,52 @@
+
+
+services:
+  db:
+    image: mariadb:10.11
+    container_name: sghss_db
+    restart: unless-stopped
+    environment:
+     MYSQL_ROOT_USER: root
+     MYSQL_ROOT_PASSWORD: root
+     MYSQL_USER: sghss_db_user
+     MYSQL_PASSWORD: sghss_db_pass
+     MYSQL_DATABASE: sghss_db
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    container_name: sghss_app
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=mysql+pymysql://sghss_db_user:sghss_db_pass@db:3306/sghss_db
+      - SECRET_KEY=your-secret-key-here-change-in-production
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+    volumes:
+      - ./alembic.ini:/app/alembic.ini
+      - ./alembic:/app/alembic
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  mariadb_data:
+    driver: local
