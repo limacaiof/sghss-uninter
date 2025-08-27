@@ -20,14 +20,21 @@ Sistema completo de gestão hospitalar desenvolvido em FastAPI com padrão MVC, 
 
 ## Como rodar o projeto
 
-### Manual
+### **Docker (Recomendado)**
 
+1. **Construa as imagens da aplicação**
+```bash
+docker compose up -d
+```
+2. **Sua aplicação estará rodando no endereço http://localhost:8000 ou na próxima porta disponível**
+
+### Manual
 1. **Instale as dependências**
 ```bash
 pip install -r requirements.txt
 ```
 
-2. **Configure as variáveis de ambiente**
+2. **Configure as variáveis de ambiente com base nas configurações do seu banco de dados**
 ```bash
 cp .env.example .env
 ```
@@ -53,7 +60,9 @@ python seed_database.py
 uvicorn main:app --reload
 ```
 
+7. **Sua aplicação estará rodando no endereço http://localhost:8000 ou na próxima porta disponível**
+
 ## Documentação da API
 
-- **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
+- **Swagger UI**: http://localhost/docs
+- **ReDoc**: http://localhost/redoc
