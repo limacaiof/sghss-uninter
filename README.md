@@ -64,5 +64,5 @@ uvicorn main:app --reload
 
 ## Documentação da API
 
-- **Swagger UI**: http://localhost/docs
-- **ReDoc**: http://localhost/redoc
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
